@@ -3,8 +3,6 @@ import hashlib
 import pandas as pd
 import sqlite3
 
-
-#test comment..
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
 
