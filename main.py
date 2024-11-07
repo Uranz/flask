@@ -28,12 +28,18 @@ def render_form():
 def about():
     # conn = sqlite3.connect('titanic.sqlite')
     # df = pd.read_sql('SELECT Name, Age FROM titanic', conn)
-    name = "Grace"
-    age = 16
-    print(name, age)
+    title = "GRACE"
+    me = "AN INNOVATOR, A CURATOR, A FOOD ENTHUSIAST"
+    desc = "This summer, I set off on an adventure to explore new destinations, capturing every experience through my Canon camera. My travels took me to the lively shores of Miami and the captivating attractions of Orlando, where I found inspiration in the sun-drenched beaches and iconic palm trees. Each photograph I took reflects the vibrant energy of these places, preserving the unforgettable moments and the beauty of my journey. Through my lens, I aimed to convey not just what I saw, but the joy and excitement of discovery that accompanied each new experience."
+    work = "Here are some of my latest photographs, showcasing my adventures and the beauty I've encountered along the way. Each image captures a moment in time, reflecting my passion for photography and the diverse experiences that inspire me."
+    des2 = "Grace is a 16-year-old sophomore at Stevenson High School with a strong passion for both creativity and technology. She loves fashion, photography, and food, and she’s on track to combine these interests with her aspirations to major in computer science and economics. Skilled in Java and Python, and currently working with SQL, HTML, and other web development languages, Grace brings technical expertise to her projects. Her Mongolian heritage adds a rich layer to her appreciation for diverse cultures, especially when it comes to trying new cuisines. With math as her favorite subject, she thrives in analytical challenges, setting her on an exciting path toward a multifaceted future."
+    print(title, me, desc)
     return render_template('about.html',
-                            my_title = name,
-                            my_hobby = age
+                            my_title = title,
+                            my_hobby = me,
+                            my_des = desc,
+                            my_work = work,
+                            my_des2 = des2
                             )
 
 
@@ -60,6 +66,29 @@ def submit_post():
 
     return render_template('form.html', message=message)
 
+@app.route('/me', methods=['GET', 'POST'])
+def about_me():
+    message = ""
+    if request.method == 'POST':
+        name_insert = request.form['name']
+        age_insert = request.form['age']
+        hobby_insert = request.form['hobby']
+        project_insert = request.form['project']
+
+        conn = sqlite3.connect('titanic.sqlite')
+        cursor = conn.cursor()
+
+        # Ensure the me table exists (you might want to modify or remove this part)
+        cursor.execute('''CREATE TABLE IF NOT EXISTS me (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER, hobby TEXT, project TEXT)''')
+
+        # Insert the submitted form data into the me table
+        cursor.execute("INSERT INTO me (name, age, hobby, project) VALUES (?, ?, ?, ?)", (name_insert, age_insert, hobby_insert, project_insert))
+        conn.commit()
+        conn.close()
+
+        message = "Post submitted successfully!"
+    return render_template('grace.html', message=message)
+
 @app.route('/blog')
 def show_blogs():
     conn = sqlite3.connect('titanic.sqlite')
@@ -74,6 +103,7 @@ def show_blogs():
     formatted_posts = [{"title": row[0], "content": row[1], "type": row[2]} for row in posts]
 
     return render_template('blog.html', posts=formatted_posts)
+
 # Route for registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():
