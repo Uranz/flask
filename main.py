@@ -26,8 +26,6 @@ def render_form():
 
 @app.route('/')
 def about():
-    conn = sqlite3.connect('titanic.sqlite')
-    df = pd.read_sql('SELECT Name, Age FROM titanic', conn)
     title = "GRACE"
     me = "AN INNOVATOR, A CURATOR, A FOOD ENTHUSIAST"
     desc = "This summer, I set off on an adventure to explore new destinations, capturing every experience through my Canon camera. My travels took me to the lively shores of Miami and the captivating attractions of Orlando, where I found inspiration in the sun-drenched beaches and iconic palm trees. Each photograph I took reflects the vibrant energy of these places, preserving the unforgettable moments and the beauty of my journey. Through my lens, I aimed to convey not just what I saw, but the joy and excitement of discovery that accompanied each new experience."
@@ -40,7 +38,7 @@ def about():
                             my_hobby = me,
                             my_des = desc,
                             my_work = work,
-                            my_des2 = des2 + age + des3
+                            my_des2 = des2 + des3
                             )
 
 
@@ -161,4 +159,3 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

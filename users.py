@@ -16,7 +16,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS me
                     age INTEGER,
                     hobby TEXT,
                     project TEXT)''')
-
+print("execution done")
 
 conn.commit()
 conn.close()
