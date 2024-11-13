@@ -26,19 +26,34 @@ def render_form():
 
 @app.route('/')
 def about():
-    title = "GRACE"
-    me = "AN INNOVATOR, A CURATOR, A FOOD ENTHUSIAST"
-    desc = "This summer, I set off on an adventure to explore new destinations, capturing every experience through my Canon camera. My travels took me to the lively shores of Miami and the captivating attractions of Orlando, where I found inspiration in the sun-drenched beaches and iconic palm trees. Each photograph I took reflects the vibrant energy of these places, preserving the unforgettable moments and the beauty of my journey. Through my lens, I aimed to convey not just what I saw, but the joy and excitement of discovery that accompanied each new experience."
-    work = "Here are some of my latest photographs, showcasing my adventures and the beauty I've encountered along the way. Each image captures a moment in time, reflecting my passion for photography and the diverse experiences that inspire me."
-    des2 = "Grace is a "
-    des3 = "-year-old sophomore at Stevenson High School with a strong passion for both creativity and technology. She loves fashion, photography, and food, and she’s on track to combine these interests with her aspirations to major in computer science and economics. Skilled in Java and Python, and currently working with SQL, HTML, and other web development languages, Grace brings technical expertise to her projects. Her Mongolian heritage adds a rich layer to her appreciation for diverse cultures, especially when it comes to trying new cuisines. With math as her favorite subject, she thrives in analytical challenges, setting her on an exciting path toward a multifaceted future."
+
+    conn = sqlite3.connect('titanic.sqlite')
+    cursor = conn.cursor()
+
+    # Fetch all posts from the database
+    cursor.execute("SELECT * FROM me")
+    me = cursor.fetchall()
+    conn.close()
+
+    # Format posts for rendering
+    myInfo = [{"id": row[0], "name": row[1], "age": row[2], "hobby":row[3], "project":row[4]} for row in me]
+    name = myInfo[len(myInfo)-1]["name"]
+    age = str(myInfo[len(myInfo)-1]["age"])
+    hobby = myInfo[len(myInfo)-1]["hobby"]
+    project = myInfo[len(myInfo)-1]["project"]
+
+    title = name
+    hobbies = hobby
+    desc = hobby
+    work = project
+    des2 = "Grace is a " + age + "-year-old sophomore at Stevenson High School with a strong passion for both creativity and technology. She loves fashion, photography, and food, and she’s on track to combine these interests with her aspirations to major in computer science and economics. Skilled in Java and Python, and currently working with SQL, HTML, and other web development languages, Grace brings technical expertise to her projects. Her Mongolian heritage adds a rich layer to her appreciation for diverse cultures, especially when it comes to trying new cuisines. With math as her favorite subject, she thrives in analytical challenges, setting her on an exciting path toward a multifaceted future."
     print(title, me, desc)
     return render_template('about.html',
                             my_title = title,
-                            my_hobby = me,
+                            my_hobby = hobbies,
                             my_des = desc,
                             my_work = work,
-                            my_des2 = des2 + des3
+                            my_des2 = des2
                             )
 
 
@@ -74,11 +89,12 @@ def about_me():
         hobby_insert = request.form['hobby']
         project_insert = request.form['project']
 
+
         conn = sqlite3.connect('titanic.sqlite')
         cursor = conn.cursor()
 
         # Ensure the me table exists (you might want to modify or remove this part)
-        cursor.execute('''CREATE TABLE IF NOT EXISTS me (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, hobby TEXT, project TEXT)''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS me (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, hobby TEXT, description TEXT, description2 TEXT, description3 TEXT)''')
 
         # Insert the submitted form data into the me table
         cursor.execute("INSERT INTO me (name, age, hobby, project) VALUES (?, ?, ?, ?)", (name_insert, age_insert, hobby_insert, project_insert))
