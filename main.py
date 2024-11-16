@@ -6,6 +6,7 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
 
+db_path = 'db/titanic.sqlite'
 @app.route('/second')
 def hello_world():
     return render_template('index.html')
@@ -27,7 +28,7 @@ def render_form():
 @app.route('/')
 def about():
 
-    conn = sqlite3.connect('db/titanic.sqlite')
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
     # Fetch all posts from the database
@@ -90,7 +91,7 @@ def about_me():
         project_insert = request.form['project']
 
 
-        conn = sqlite3.connect('db/titanic.sqlite')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Ensure the me table exists (you might want to modify or remove this part)
@@ -127,7 +128,7 @@ def register():
         password = request.form['password']
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-        conn = sqlite3.connect('db/titanic.sqlite')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         try:
@@ -150,7 +151,7 @@ def submit_contact():
     message = request.form.get('message')
 
     # Insert data into the contacts table
-    conn = sqlite3.connect('db/titanic.sqlite' , check_same_thread=False)
+    conn = sqlite3.connect(db_path , check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute('''
         INSERT INTO contacts (name, email, message)
@@ -166,7 +167,7 @@ def submit_contact():
 @app.route('/admin')
 def admin():
     # Retrieve all contact records
-    conn = sqlite3.connect('db/titanic.sqlite', check_same_thread=False)
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM contacts')
     contacts = cursor.fetchall()
@@ -183,7 +184,7 @@ def login():
         password = request.form['password']
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-        conn = sqlite3.connect('db/titanic.sqlite')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, hashed_password))
