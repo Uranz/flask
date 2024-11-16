@@ -18,5 +18,23 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS me
                     project TEXT)''')
 print("execution done")
 
+name_insert = "Grance"
+age_insert = 15
+hobby_insert = "my hobby"
+project_insert = "my project"
+
+# Insert the submitted form data into the me table
+cursor.execute("INSERT INTO me (name, age, hobby, project) VALUES (?, ?, ?, ?)", (name_insert, age_insert, hobby_insert, project_insert))
+
+
+
+# Create the contacts table if it doesn't exist
+cursor.execute('''CREATE TABLE IF NOT EXISTS contacts (
+                    id INTEGER PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    email TEXT  NOT NULL,
+                    message TEXT NOT NULL,
+                    current_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+
 conn.commit()
 conn.close()
