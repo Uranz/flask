@@ -27,7 +27,7 @@ def render_form():
 @app.route('/')
 def about():
 
-    conn = sqlite3.connect('titanic.sqlite')
+    conn = sqlite3.connect('db/titanic.sqlite')
     cursor = conn.cursor()
 
     # Fetch all posts from the database
@@ -90,7 +90,7 @@ def about_me():
         project_insert = request.form['project']
 
 
-        conn = sqlite3.connect('titanic.sqlite')
+        conn = sqlite3.connect('db/titanic.sqlite')
         cursor = conn.cursor()
 
         # Ensure the me table exists (you might want to modify or remove this part)
@@ -127,7 +127,7 @@ def register():
         password = request.form['password']
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-        conn = sqlite3.connect('titanic.sqlite')
+        conn = sqlite3.connect('db/titanic.sqlite')
         cursor = conn.cursor()
 
         try:
@@ -150,7 +150,7 @@ def submit_contact():
     message = request.form.get('message')
 
     # Insert data into the contacts table
-    conn = sqlite3.connect('titanic.sqlite' , check_same_thread=False)
+    conn = sqlite3.connect('db/titanic.sqlite' , check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute('''
         INSERT INTO contacts (name, email, message)
@@ -166,7 +166,7 @@ def submit_contact():
 @app.route('/admin')
 def admin():
     # Retrieve all contact records
-    conn = sqlite3.connect('titanic.sqlite', check_same_thread=False)
+    conn = sqlite3.connect('db/titanic.sqlite', check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM contacts')
     contacts = cursor.fetchall()
@@ -183,7 +183,7 @@ def login():
         password = request.form['password']
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-        conn = sqlite3.connect('titanic.sqlite')
+        conn = sqlite3.connect('db/titanic.sqlite')
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, hashed_password))

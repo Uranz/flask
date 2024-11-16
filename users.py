@@ -2,7 +2,7 @@
 import sqlite3
 import hashlib
 
-conn = sqlite3.connect('titanic.sqlite')
+conn = sqlite3.connect('db/titanic.sqlite')
 cursor = conn.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS users (
