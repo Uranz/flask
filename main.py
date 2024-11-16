@@ -2,11 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import hashlib
 import pandas as pd
 import sqlite3
+import os
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
 
-db_path = 'db/titanic.sqlite'
+# Get the base directory of the current script
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Construct the database path dynamically
+db_path = os.path.join(basedir, 'db', 'titanic.sqlite')
+
 @app.route('/second')
 def hello_world():
     return render_template('index.html')
