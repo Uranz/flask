@@ -18,10 +18,10 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS me
                     project TEXT)''')
 print("execution done")
 
-name_insert = "Grance"
-age_insert = 15
-hobby_insert = "my hobby"
-project_insert = "my project"
+name_insert = "GRACE"
+age_insert = 16
+hobby_insert = "EATING FOOD"
+project_insert = "I HAVE BEEN EATING SUN CHIPS FOR THE PAST 24 HOURS"
 
 # Insert the submitted form data into the me table
 cursor.execute("INSERT INTO me (name, age, hobby, project) VALUES (?, ?, ?, ?)", (name_insert, age_insert, hobby_insert, project_insert))

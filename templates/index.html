@@ -1,150 +1,370 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Uranzaya's webpage</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<style>
-body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-</style>
+    <title>AI-Assisted Coding Practice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/monokai.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --primary-color: #ff4500;
+            --secondary-color: #32cd32;
+            --accent-color: #1e90ff;
+            --background-color: #222;
+            --container-bg: rgba(0, 50, 70, 0.85);
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-image:
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: backgroundScroll 20s linear infinite;
+        }
+
+        .container {
+                    max-width: 900px;
+                    margin: 2rem auto;
+                    padding: 2rem;
+                    background-color: var(--container-bg);
+                    box-shadow: 0 0 20px var(--primary-color);
+                    border-radius: 10px;
+                    position: relative;
+                    overflow: hidden;
+                    border: 1px solid var(--primary-color);
+                }
+                .container::before {
+                    content: "";
+                    position: absolute;
+                    top: -50%;
+                    left: -50%;
+                    width: 200%;
+                    height: 200%;
+                    background: repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 2px,
+                        rgba(0, 255, 255, 0.1) 2px,
+                        rgba(0, 255, 255, 0.1) 4px
+                    );
+                    animation: scan 10s linear infinite;
+                    pointer-events: none;
+                    z-index: -1;
+                }
+                @keyframes scan {
+                    0% {transform: translateY(0); }
+                    100% {transform: translateY(50%); }
+                }
+                .animated-text {
+                    position: relative;
+                    display: inline-block;
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    letter-spacing: 4px;
+                    color: var(--secondary-color);
+                    text-shadow: 0 0 10px var(--secondary-color);
+                    margin-bottom: 1rem;
+                    width: 100%;
+                    text-align: center;
+                }
+                .animated-text::before,
+                .animated-text::after {
+                    content: attr(data-text);
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                }
+                .animated-text::before {
+                    color: var(--accent-color);
+                    animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+                }
+                .animated-text::after {
+                    color: var(--primary-color);
+                    animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+                }
+                * {
+                    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" style="fill:rgba(110,68,255,1);transform:rotate(-45deg);"><path d="M12 2L2 22l10-6 10 6L12 2z"/></svg>'), auto;
+                }
+                a, .stat-card, .vulnerable-item, button, input[type="submit"] {
+                    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" style="fill:rgba(110,68,255,1);transform:rotate(-45deg);"><path d="M12 2L2 22l10-6 10 6L12 2z"/></svg>'), pointer;
+                }
+                a:hover, .stat-card:hover, button:hover, input[type="submit"]:hover {
+                    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" style="fill:rgba(255,127,80,1);transform:rotate(-45deg);"><path d="M12 2L2 22l10-6 10 6L12 2z"/></svg>'), pointer;
+                    filter: drop-shadow(0 0 6px var(--secondary-color));
+                }
+                .vulnerable-item:hover {
+                    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" style="fill:rgba(255,0,0,1);transform:rotate(-45deg);"><path d="M12 2L2 22l10-6 10 6L12 2z"/></svg>'), pointer;
+                    filter: drop-shadow(0 0 6px #f00);
+                }
+                @keyframes glitch {
+                    0% {transform: translate(0); }
+                    20% { transform: translate(-2px, 2px); }
+                    40% {transform: translate(-2px, -2px); }
+                    60% { transform: translate(2px, 2px); }
+                    80% { transform: translate(2px, -2px); }
+                    100% { transform: translate(0); }
+                }
+                .logo {
+                    text-align: center;
+                    margin-bottom: 2rem;
+                }
+                .logo svg {
+                    max-width: 300px;
+                    height: auto;
+                }
+                .summary {
+                    background-color: rgba(0, 40, 80, 0.6);
+                    padding: 1.5rem;
+                    border-radius: 8px;
+                    margin-bottom: 2rem;
+                    border: 1px solid var(--primary-color);
+                    box-shadow: 0 0 10px var(--primary-color);
+                }
+                .summary-item {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 0.5rem;
+                    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+                    padding-bottom: 0.5rem;
+                }
+                .summary-label {
+                    font-weight: bold;
+                    color: var(--accent-color);
+                }
+                .summary-value {
+                    color: var(--primary-color);
+                }
+                .progress-bar {
+                    width: 100%;
+                    height: 20px;
+                    background-color: rgba(0, 255, 255, 0.1);
+                    border-radius: 10px;
+                    overflow: hidden;
+                    margin-bottom: 1rem;
+                }
+                .progress {
+                    width: {(total_found / total_scanned) * 100}%;
+                    height: 100%;
+                    background-color: var(--secondary-color);
+                    animation: pulse 2s infinite;
+                }
+                @keyframes pulse {
+                    0% { opacity: 0.6; }
+                    50% {opacity: 1; }
+                    100% {opacity: 0.6; }
+                }
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1rem;
+                    margin-bottom: 2rem;
+                }
+                .stat-card {
+                    background-color: rgba(0, 40, 80, 0.6);
+                    padding: 1rem;
+                    border-radius: 8px;
+                    text-align: center;
+                    border: 1px solid var(--primary-color);
+                    transition: all 0.3s ease;
+                }
+                .stat-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+                }
+                .stat-value {
+                    font-size: 2rem;
+                    font-weight: bold;
+                    color: var(--accent-color);
+                }
+                .stat-label {
+                    font-size: 0.9rem;
+                    color: var(--primary-color);
+                }
+                .timeline {
+                    position: relative;
+                    max-width: 1200px;
+                    margin: 2rem auto;
+                }
+                .timeline::after {
+                    content: '';
+                    position: absolute;
+                    width: 6px;
+                    background-color: var(--primary-color);
+                    top: 0;
+                    bottom: 0;
+                    left: 50%;
+                    margin-left: -3px;
+                }
+                .timeline-item {
+                    padding: 10px 40px;
+                    position: relative;
+                    background-color: inherit;
+                    width: 50%;
+                }
+                .timeline-item::after {
+                    content: '';
+                    position: absolute;
+                    width: 25px;
+                    height: 25px;
+                    right: -17px;
+                    background-color: var(--background-color);
+                    border: 4px solid var(--accent-color);
+                    top: 15px;
+                    border-radius: 50%;
+                    z-index: 1;
+                }
+                .left {
+                    left: 0;
+                }
+                .right {
+                    left: 50%;
+                }
+                .right::after {
+                    left: -16px;
+                }
+                .timeline-content {
+                    padding: 20px 30px;
+                    background-color: rgba(0, 40, 80, 0.6);
+                    position: relative;
+                    border-radius: 6px;
+                }
+                .vulnerable-item {
+                    background-color: rgba(255, 0, 0, 0.2);
+                    border: 1px solid #f00;
+                    color: #f00;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    border-radius: 4px;
+                    word-break: break-all;
+                    box-shadow: 0 0 10px #f00;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .vulnerable-item::before {
+                    content: "VULNERABLE";
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: #f00;
+                    color: #000;
+                    font-size: 0.7rem;
+                    padding: 0.2rem 0.5rem;
+                    transform: rotate(45deg) translate(25%, -50%);
+                }
+                .vulnerable-item:hover {
+                    transform: scale(1.02);
+                    box-shadow: 0 0 20px #f00;
+                }
+
+                .editor-container {
+                    margin: 2rem 0;
+                }
+                button {
+                        background-color: var(--primary-color);
+                        color: #fff;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: 5px;
+                        font-size: 1rem;
+                        cursor: pointer;
+                        margin-top: 10px;
+                    }
+        /* Other CSS rules from your code here */
+
+    </style>
 </head>
-<body class="w3-light-grey">
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+            <defs>
+                <linearGradient id="scanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6E44FF"/>
+                <stop offset="50%" style="stop-color:#1CDCE8"/>
+                <stop offset="100%" style="stop-color:#F77E21"/>
+                </linearGradient>
+                <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#FF5F6D"/>
+                <stop offset="50%" style="stop-color:#FFC371"/>
+                <stop offset="100%" style="stop-color:#FF5F6D"/>
+                </linearGradient>
+            </defs>
 
-<!-- w3-content defines a container for fixed size centered content,
-and is wrapped around the whole page content, except for the footer in this example -->
-<div class="w3-content" style="max-width:1400px">
+            <!-- Central Scanner Element -->
+            <g transform="translate(150,100)">
+                <!-- Outer Ring -->
+                <circle r="100" fill="none" stroke="#1CDCE8" stroke-width="4" stroke-dasharray="10 5">
+                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/>
+                </circle>
 
-<!-- Header -->
-<header class="w3-container w3-center w3-padding-32">
-  <h1><b>MY BLOG</b></h1>
-  <p>Welcome to the blog of <span class="w3-tag">unknown</span></p>
-</header>
 
-<!-- Grid -->
-<div class="w3-row">
+                <!-- Middle Ring -->
+                <circle r="85" fill="none" stroke="#F77E21" stroke-width="3" stroke-dasharray="8 4">
+                <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="15s" repeatCount="indefinite"/>
+                </circle>
 
-<!-- Blog entries -->
-<div class="w3-col l8 s12">
-  <!-- Blog entry -->
-  <div class="w3-card-4 w3-margin w3-white">
-    <img src="{{ url_for('static', filename='images/little_me.JPG') }}" alt="Nature" style="width:100%">
-    <div class="w3-container">
-      <h3><b>TITLE HEADING</b></h3>
-      <h5>Title description, <span class="w3-opacity">April 7, 2014</span></h5>
-    </div>
+                <!-- Inner Ring -->
+                <circle r="50" fill="none" stroke="#6E44FF" stroke-width="2" stroke-dasharray="6 3">
+                <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/>
+                </circle>
+            </g>
 
-    <div class="w3-container">
-      <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
-        tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-      <div class="w3-row">
-        <div class="w3-col m8 s12">
-          <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
+            <!-- Scanning Beam -->
+            <g transform="translate(150,100)">
+                <path d="M0,0 L-70,0" fill="none" stroke="url(#scanGradient)" stroke-width="4">
+                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
+                </path>
+            </g>
+
+
+
+
+            <!-- Byamba Text -->
+            <g transform="translate(150,100)">
+                <text x="0" y="5" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="url(#textGradient)" text-anchor="middle">BYAMBA</text>
+            </g>
+            </svg>
         </div>
-        <div class="w3-col m4 w3-hide-small">
-          <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-tag">0</span></span></p>
-        </div>
-      </div>
+        <h1 class="animated-text" data-text="AI-Assisted Coding Practice">AI-Assisted Coding Practice</h1>
+
+        <form action="/submit_code" method="post" class="editor-container">
+            <textarea id="code" name="code" placeholder="// Write your Python code here">{{ code or '' }}</textarea>
+            <button type="submit">Run Code</button>
+        </form>
+
+        {% if response %}
+            <h2>Result:</h2>
+            <pre>
+        {{ response | tojson(indent=4) }}
+            </pre>
+        {% endif %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/python/python.min.js"></script>
+        <script>
+            var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+                lineNumbers: true,
+                mode: 'python',
+                theme: 'monokai',
+                indentUnit: 4,
+                matchBrackets: true
+            });
+        </script>
     </div>
-  </div>
-  <hr>
-
-  <!-- Blog entry -->
-  <div class="w3-card-4 w3-margin w3-white">
-  <img src="/w3images/bridge.jpg" alt="Norway" style="width:100%">
-    <div class="w3-container">
-      <h3><b>BLOG ENTRY</b></h3>
-      <h5>Title description, <span class="w3-opacity">April 2, 2014</span></h5>
-    </div>
-
-    <div class="w3-container">
-      <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed
-        tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-      <div class="w3-row">
-        <div class="w3-col m8 s12">
-          <p><button class="w3-button w3-padding-large w3-white w3-border"><b>READ MORE »</b></button></p>
-        </div>
-        <div class="w3-col m4 w3-hide-small">
-          <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-badge">2</span></span></p>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- END BLOG ENTRIES -->
-</div>
-
-<!-- Introduction menu -->
-<div class="w3-col l4">
-  <!-- About Card -->
-  <div class="w3-card w3-margin w3-margin-top">
-  <img src="{{ url_for('static', filename='images/flowers.JPG') }}">
-    <div class="w3-container w3-white">
-      <h4><b>My Name</b></h4>
-      <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a interest of lorem ipsum and mauris neque quam blog. I want to share my world with you.</p>
-    </div>
-  </div><hr>
-
-  <!-- Posts -->
-  <div class="w3-card w3-margin">
-    <div class="w3-container w3-padding">
-      <h4>Popular Posts</h4>
-    </div>
-    <ul class="w3-ul w3-hoverable w3-white">
-      <li class="w3-padding-16">
-        <img src="{{ url_for('static', filename='images/flowers.JPG') }}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-        <span class="w3-large">Lorem</span><br>
-        <span>Sed mattis nunc</span>
-      </li>
-      <li class="w3-padding-16">
-        <img src="/w3images/gondol.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-        <span class="w3-large">Ipsum</span><br>
-        <span>Praes tinci sed</span>
-      </li>
-      <li class="w3-padding-16">
-        <img src="/w3images/skies.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-        <span class="w3-large">Dorum</span><br>
-        <span>Ultricies congue</span>
-      </li>
-      <li class="w3-padding-16 w3-hide-medium w3-hide-small">
-        <img src="/w3images/rock.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-        <span class="w3-large">Mingsum</span><br>
-        <span>Lorem ipsum dipsum</span>
-      </li>
-    </ul>
-  </div>
-  <hr>
-
-  <!-- Labels / tags -->
-  <div class="w3-card w3-margin">
-    <div class="w3-container w3-padding">
-      <h4>Tags</h4>
-    </div>
-    <div class="w3-container w3-white">
-    <p><span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">London</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">IKEA</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">NORWAY</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">DIY</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Baby</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Family</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">News</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Clothing</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Shopping</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sports</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Games</span>
-    </p>
-    </div>
-  </div>
-
-<!-- END Introduction Menu -->
-</div>
-
-<!-- END GRID -->
-</div><br>
-
-<!-- END w3-content -->
-</div>
-
-<!-- Footer -->
-<footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
-  <button class="w3-button w3-black w3-disabled w3-padding-large w3-margin-bottom">Previous</button>
-  <button class="w3-button w3-black w3-padding-large w3-margin-bottom">Next »</button>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-</footer>
-
 </body>
 </html>
