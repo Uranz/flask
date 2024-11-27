@@ -1,4 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+import requests
+from PIL import Image
+from io import BytesIO
+import matplotlib.pyplot as plt
 import hashlib
 import pandas as pd
 import sqlite3
@@ -215,7 +219,7 @@ def logout():
 @app.route('/pokemon')
 def pokemon_display():
 
-    return "Hi this is going to be a pokemon app."
+    return render_template('pokemon.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
