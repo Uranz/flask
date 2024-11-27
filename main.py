@@ -14,7 +14,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Construct the database path dynamically
 db_path = os.path.join(basedir, 'db', 'titanic.sqlite')
 
-@app.route('/')
+@app.route('/ai')
 def index():
     return render_template('index.html')
 
@@ -210,6 +210,12 @@ def logout():
     session.pop('username', None)
     flash("Logged out successfully.")
     return redirect(url_for('login'))
+
+
+@app.route('/pokemon')
+def pokemon_display():
+
+    return "Hi this is going to be a pokemon app."
 
 if __name__ == '__main__':
     app.run(debug=True)
