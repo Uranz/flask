@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, Response
 import requests
 from PIL import Image
 from io import BytesIO
@@ -18,9 +18,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # Construct the database path dynamically
 db_path = os.path.join(basedir, 'db', 'titanic.sqlite')
 
-@app.route('/ai')
-def index():
-    return render_template('index.html')
 
 @app.route('/submit_code', methods=['POST'])
 def submit_code():
@@ -38,9 +35,6 @@ def execute_code(code):
         return exec_globals.get('result', 'Code executed successfully!')
     except Exception as e:
         return str(e)
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
 
 @app.route('/second')
@@ -237,6 +231,26 @@ def fetch_pokemon_sprite(pokemon_name):
     else:
         return None
 
+# Fetch list of Pokémon names
+def fetch_pokemon_names():
+    url = "https://pokeapi.co/api/v2/pokemon?limit=1000"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return [pokemon['name'] for pokemon in data['results']]
+    else:
+        return []
+
+# Fetch Pokémon sprite URL
+def fetch_pokemon_sprite(pokemon_name):
+    url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        raw_data = response.json()
+        return raw_data['sprites']['front_default']
+    else:
+        return None
+
 @app.route("/pokemon", methods=["GET", "POST"])
 def index():
     pokemon_names = fetch_pokemon_names()
@@ -262,6 +276,7 @@ def sprite(pokemon_name):
         if response.status_code == 200:
             return Response(response.content, mimetype="image/png")
     return "Sprite not found", 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)
