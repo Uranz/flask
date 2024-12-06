@@ -103,6 +103,7 @@ body, html {
       <p><em>{{my_des2}}</em></p>
     </div>
   </div>
+
   <p class="w3-large w3-center w3-padding-16">I really like:</p>
   <p class="w3-wide"><i class="fa fa-camera"></i>Photography</p>
   <div class="w3-light-grey">
@@ -152,11 +153,29 @@ body, html {
   <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
   <div class="w3-row-padding w3-center">
     <div class="w3-col m3">
+        <a href="https://uranz.pythonanywhere.com/pokemon">
+            <img src="{{ sprite_url }}" alt="pikachu" style="width:110%" class="clickable-image" />
+        </a>
+        <p>Click to view Pokémon details!</p>
+    </div>
+    <div class="w3-col m3">
       <img src="{{ url_for('static', filename='images/palmtree.JPEG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="palmtre my new religion">
     </div>
 
     <div class="w3-col m3">
       <img src="{{ url_for('static', filename='images/plane.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="plane window to miamiii.">
+    </div>
+    <div class="w3-col m3">
+      <img src="{{ url_for('static', filename='images/pizza.JPG') }}" style="width:92%" onclick="onClick(this)" class="w3-hover-opacity" alt="hampton social pizza is to die for.">
+    </div>
+
+    <div class="w3-row-padding w3-center w3-section">
+
+    <div class="w3-col m3">
+      <img src="{{ url_for('static', filename='images/runway.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="going home after vacation:(">
+    </div>
+    <div class="w3-col m3">
+      <img src="{{ url_for('static', filename='images/carrie.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="my friend carrie in downtown chicago.">
     </div>
 
     <div class="w3-col m3">
@@ -164,26 +183,9 @@ body, html {
     </div>
 
     <div class="w3-col m3">
-      <img src="{{ url_for('static', filename='images/pizza.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="hampton social pizza is to die for.">
-    </div>
-  </div>
-
-  <div class="w3-row-padding w3-center w3-section">
-    <div class="w3-col m3">
-      <img src="{{ url_for('static', filename='images/carrie.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="my friend carrie in downtown chicago.">
-    </div>
-
-    <div class="w3-col m3">
       <img src="{{ url_for('static', filename='images/little_me.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="3 year old grace">
     </div>
 
-    <div class="w3-col m3">
-      <img src="{{ url_for('static', filename='images/mocha_funny.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="isn't mocha so funny">
-    </div>
-
-    <div class="w3-col m3">
-      <img src="{{ url_for('static', filename='images/runway.JPG') }}" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="going home after vacation:(">
-    </div>
     <button class="w3-button w3-padding-large w3-light-grey" style="margin-top:64px">LOAD MORE</button>
   </div>
 </div>

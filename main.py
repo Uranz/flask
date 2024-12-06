@@ -77,6 +77,8 @@ def about():
     hobbies = hobby
     desc = hobby
     work = project
+    sprite_url = fetch_pokemon_sprite("pikachu")
+
     des2 = "Grace is a " + age + "-year-old sophomore at Stevenson High School with a strong passion for both creativity and technology. She loves fashion, photography, and food, and she’s on track to combine these interests with her aspirations to major in computer science and economics. Skilled in Java and Python, and currently working with SQL, HTML, and other web development languages, Grace brings technical expertise to her projects. Her Mongolian heritage adds a rich layer to her appreciation for diverse cultures, especially when it comes to trying new cuisines. With math as her favorite subject, she thrives in analytical challenges, setting her on an exciting path toward a multifaceted future."
     print(title, me, desc)
     return render_template('about.html',
@@ -84,7 +86,8 @@ def about():
                             my_hobby = hobbies,
                             my_des = desc,
                             my_work = work,
-                            my_des2 = des2
+                            my_des2 = des2,
+                            sprite_url = sprite_url
                             )
 
 @app.route('/posts', methods=['GET', 'POST'])
