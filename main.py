@@ -12,6 +12,67 @@ import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
 
+API_URL = 'https://random-word-api.herokuapp.com/word?number=1'  # Generates 1 random word
+
+def get_random_word():
+    try:
+        response = requests.get(API_URL)
+        response.raise_for_status()
+        data = response.json()
+        if isinstance(data, list) and len(data) > 0:
+            return data[0].upper()
+    except requests.RequestException as e:
+        print(f"Error fetching word: {e}")
+    return "PYTHON"  # Fallback word
+
+@app.route('/hangman')
+def hangman():
+    if 'word' not in session:
+        session['word'] = get_random_word()
+        session['guesses'] = []
+        session['misses'] = 0
+        session['message'] = ''
+    word_display = ''.join(
+        letter if letter in session['guesses'] else '_' for letter in session['word']
+    )
+    return render_template(
+        'hangman.html',
+        word_display=word_display,
+        guesses=session['guesses'],
+        misses=session['misses'],
+        message=session.get('message', ''),
+        word=session['word'],
+    )
+
+@app.route('/reset')
+def reset_hangman():
+    session.pop('word', None)
+    session.pop('guesses', None)
+    session.pop('misses', None)
+    session.pop('message', None)
+    return redirect(url_for('hangman'))
+
+@app.route('/guesses', methods=['POST'])
+def guesses_hangman():
+    guess = request.form['guess'].upper()
+    if not guess.isalpha() or len(guess) != 1:
+        session['message'] = "Invalid input! Please guess a single letter."
+        return redirect(url_for('hangman'))
+
+    if guess not in session['guesses']:
+        session['guesses'].append(guess)
+        if guess in session['word']:
+            session['message'] = f"Good Guess! '{guess}' is in the word."
+        else:
+            session['misses'] += 1
+            session['message'] = f"Sorry! '{guess}' is not in the word."
+    else:
+        session['message'] = f"You already guessed '{guess}'."
+    return redirect(url_for('hangman'))
+
+
+
+
 # Get the base directory of the current script
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -278,8 +339,32 @@ def sprite(pokemon_name):
         response = requests.get(sprite_url)
         if response.status_code == 200:
             return Response(response.content, mimetype="image/png")
-    return "Sprite not found", 404
+    return ["Sprite not found", 404]
 
+@app.route("/calculator", methods=["GET", "POST"])
+def calculator():
+    result = None
+    if request.method == "POST":
+        try:
+            num1 = float(request.form["num1"])
+            num2 = float(request.form["num2"])
+            operation = request.form["operation"]
+
+            # Perform the calculation based on the operation
+            if operation == "+":
+                result = num1 + num2
+            elif operation == "-":
+                result = num1 - num2
+            elif operation == "*":
+                result = num1 * num2
+            elif operation == "/":
+                result = num1 / num2
+            else:
+                result = "Invalid operation"
+        except ValueError:
+            result = "Please enter valid numbers."
+
+    return render_template("calculator.html", result=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
