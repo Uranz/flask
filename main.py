@@ -229,18 +229,41 @@ def submit_contact():
     # Redirect to the admin page
     return redirect('/admin')
 
-# Route to display admin page
-@app.route('/admin')
+@app.route('/admin', methods=['GET', 'POST'])
 def admin():
-    # Retrieve all contact records
     conn = sqlite3.connect(db_path, check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM contacts')
-    contacts = cursor.fetchall()
+    
+    # Fetch all table names in the database
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+    tables = [row[0] for row in cursor.fetchall()]
+    
+    selected_table = None
+    table_data = []
+    table_columns = []
+    
+    if request.method == 'POST':
+        # Get the selected table from the dropdown
+        selected_table = request.form.get('table_name')
+        if selected_table:
+            # Fetch data and column names for the selected table
+            cursor.execute(f"PRAGMA table_info({selected_table})")
+            table_columns = [info[1] for info in cursor.fetchall()]
+            
+            cursor.execute(f"SELECT * FROM {selected_table}")
+            table_data = cursor.fetchall()
+    
     conn.close()
+    
+    # Render the admin page with table data
+    return render_template(
+        'admin.html', 
+        tables=tables, 
+        selected_table=selected_table, 
+        table_data=table_data, 
+        table_columns=table_columns
+    )
 
-    # Render the admin page with contact data
-    return render_template('admin.html', contacts=contacts)
 
 # Route for login
 @app.route('/login', methods=['GET', 'POST'])
